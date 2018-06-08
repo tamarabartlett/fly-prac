@@ -1,0 +1,20 @@
+---
+resources:
+  - name: a_github_repo
+    type: git
+    source: &repo-source
+      uri: https://github.com/tamarabartlett/a-git-repo-with-a-yml-test
+      branch: master
+
+jobs:
+  - name: Install dependencies
+    plan:
+      - get: a_github_repo
+        trigger: true
+  - name: Run tests
+    plan:
+      - get: a_github_repo
+        trigger: true
+        passed: [Install dependencies]
+      - task: run an sh
+        file: a_github_repo/aYmlTest.yml
